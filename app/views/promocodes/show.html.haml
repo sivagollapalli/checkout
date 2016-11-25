@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @promocode.name
+%p
+  %b Type:
+  = @promocode.type
+%p
+  %b Value:
+  = @promocode.value
+%p
+  %b Used in conjuncation:
+  = @promocode.used_in_conjuncation
+
+= link_to 'Edit', edit_promocode_path(@promocode)
+\|
+= link_to 'Back', promocodes_path

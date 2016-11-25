@@ -1,0 +1,27 @@
+%h1 Listing promocodes
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Type
+      %th Value
+      %th Used in conjuncation
+      %th
+      %th
+      %th
+
+  %tbody
+    - @promocodes.each do |promocode|
+      %tr
+        %td= promocode.name
+        %td= promocode.type
+        %td= promocode.value
+        %td= promocode.used_in_conjuncation
+        %td= link_to 'Show', promocode
+        %td= link_to 'Edit', edit_promocode_path(promocode)
+        %td= link_to 'Destroy', promocode, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Promocode', new_promocode_path

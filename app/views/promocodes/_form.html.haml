@@ -1,0 +1,22 @@
+= form_for @promocode do |f|
+  - if @promocode.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@promocode.errors.count, "error")} prohibited this promocode from being saved:"
+      %ul
+        - @promocode.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :type
+    = f.text_field :type
+  .field
+    = f.label :value
+    = f.text_field :value
+  .field
+    = f.label :used_in_conjuncation
+    = f.check_box :used_in_conjuncation
+  .actions
+    = f.submit 'Save'
