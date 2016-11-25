@@ -15,13 +15,13 @@
     - @promocodes.each do |promocode|
       %tr
         %td= promocode.name
-        %td= promocode.type
+        %td= promocode.promo_type
         %td= promocode.value
-        %td= promocode.used_in_conjuncation
-        %td= link_to 'Show', promocode
-        %td= link_to 'Edit', edit_promocode_path(promocode)
-        %td= link_to 'Destroy', promocode, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= promocode.used_in_conjuncation ? 'Yes' : 'No'
+        %td= link_to 'Show', admin_promocode_path(promocode)
+        %td= link_to 'Edit', edit_admin_promocode_path(promocode)
+        %td= link_to 'Destroy', admin_promocode_path(promocode), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 
-= link_to 'New Promocode', new_promocode_path
+= link_to 'New Promocode', new_admin_promocode_path

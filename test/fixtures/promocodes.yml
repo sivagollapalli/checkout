@@ -2,12 +2,12 @@
 
 one:
   name: MyString
-  type: 
+  promo_type: flat 
   value: 9.99
   used_in_conjuncation: false
 
 two:
   name: MyString
-  type: 
+  promo_type: percentage
   value: 9.99
   used_in_conjuncation: false

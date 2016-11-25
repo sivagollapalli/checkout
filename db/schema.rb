@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20161125110021) do
 
   create_table "promocodes", force: :cascade do |t|
     t.string   "name",                 default: ""
-    t.string   "type",                 default: ""
+    t.string   "promo_type",           default: ""
     t.decimal  "value",                default: "0.0"
     t.boolean  "used_in_conjuncation", default: true
     t.datetime "created_at",                           null: false
