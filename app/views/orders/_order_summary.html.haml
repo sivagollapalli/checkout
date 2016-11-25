@@ -1,0 +1,34 @@
+- total = 0
+
+.col-md-12
+  .col-md-6
+    %h3 Order Summary
+    %table.table
+      %tr
+        %th Item Name
+        %th 
+          .pull-right Qty
+        %th 
+          .pull-right Price 
+        %th 
+          .pull-right Total
+      - @order.order_items.includes(:item).each do |order_item|
+        - total += order_item.item.price * order_item.qty
+
+        %tr
+          %td= order_item.item.name
+          %td
+            .pull-right=order_item.qty
+          %td
+            .pull-right= number_to_currency(order_item.item.price, unit: '£')
+          %td
+            .pull-right= number_to_currency(order_item.item.price * order_item.qty, unit: '£')
+      %tr
+        %td
+        %td &nbsp;
+        %td 
+          .pull-right 
+            %b
+              Total Price 
+        %td
+          .pull-right= number_to_currency(total, unit: '£')  
