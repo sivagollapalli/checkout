@@ -1,0 +1,11 @@
+- unless flash[:notice].blank?
+  .alert.alert-success
+    = flash[:notice]
+- unless flash[:error].blank?
+  .alert.alert-danger
+    = flash[:error]
+
+:javascript
+  $(document).ready(function(){
+    $(".alert").delay(2000).fadeOut('slow');
+  })

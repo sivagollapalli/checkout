@@ -2,28 +2,11 @@
   .col-md-12
     %h1 New Order 
 
-= simple_form_for Order.new do |f|
+= simple_form_for Order.new, url: add_items_orders_path, remote: true do |f|
   .row
-    .col-md-6
-      .col-md-6= f.input :item, collection: Item.all.pluck(:name, :id), label: 'Select Item'
-      .col-md-6= f.input :qty, input_html: { value: 1 }
+    .col-md-8
+      .col-md-4= f.input :item, collection: Item.all.pluck(:name, :id), label: 'Select Item'
+      .col-md-4= f.input :qty, input_html: { value: 1 }
+      .col-md-4= f.submit 'Add to basket', class: 'btn btn-primary' 
       = f.hidden_field :id, value: @order.id
-
-  %br
-  .row#order_summary.hide
-  .row#checkout.hide
-    .col-md-6
-      .pull-right= f.submit 'Checkout', class: 'btn btn-primary disabled'
-
-
-:javascript
-  $('#order_item').change(function(){
-    $.ajax({
-      type: 'post', 
-      url: '/orders/calculate_order_summary',
-      data: { 'order' : { 'item_id': $('#order_item').val(), 
-        'qty': $('#order_qty').val(),
-        'id': $("#order_id").val()
-          } } 
-    })
-  });
+#order_summary

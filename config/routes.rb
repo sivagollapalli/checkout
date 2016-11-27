@@ -5,9 +5,12 @@ Rails.application.routes.draw do
   end
   resources :orders do
     collection do
-      post 'calculate_order_summary'
+      post 'add_items' 
+      post 'checkout'
     end
   end
+
+  resources :customers
 
   root 'orders#new'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -14,3 +14,7 @@
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require_tree .
+
+$('.alert').on('show', function(){
+  $(".alert").delay(5000).fadeOut('slow');
+})
