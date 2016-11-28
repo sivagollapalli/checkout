@@ -1,21 +1,22 @@
-%h1 Add Billing info 
-%br
-%h3 Amount : #{number_to_currency(@order.price_after_discount, unit: '£')}
-%br
-= simple_form_for @customer do |f|
-  .row
-    .col-md-6
-      = f.hidden_field :order_id, value: @order.id
-      = f.input :email
-      %br
-      = f.input :credit_card, input_html: { maxlength: 16 }
-      %br
-      = f.input :card_expiry_date, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      %br
-      = f.input :card_expiry_year, collection: [2016, 2017, 2018, 2019, 2020, 2021, 2022]
-      %br
-      = f.input :card_cvv, input_html: { type: 'password', maxlength: 3 } 
-      %br
-      = f.input :address, as: :text
-      %br
-      = f.submit 'Place Order', class: 'btn btn-primary'
+.panel.panel-default 
+  .panel-heading
+    .panel-title 
+      Amount : #{number_to_currency(@order.price_after_discount, unit: '£')}
+  .panel-body
+    = simple_form_for @customer do |f|
+      .row
+        .col-md-6
+          = f.hidden_field :order_id, value: @order.id
+          = f.input :email
+          %br
+          = f.input :credit_card, input_html: { maxlength: 16 }
+          %br
+          = f.input :card_expiry_date, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+          %br
+          = f.input :card_expiry_year, collection: [2016, 2017, 2018, 2019, 2020, 2021, 2022]
+          %br
+          = f.input :card_cvv, input_html: { type: 'password', maxlength: 3 } 
+          %br
+          = f.input :address, as: :text
+          %br
+          = f.submit 'Place Order', class: 'btn btn-primary'

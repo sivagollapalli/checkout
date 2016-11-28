@@ -1,7 +1,5 @@
-%h1 Editing promocode
-
-= render 'form'
-
-= link_to 'Show', admin_promocode_path(@promocode)
-\|
-= link_to 'Back', admin_promocodes_path
+.panel.panel-default 
+  .panel-heading
+    .panel-title Edit Promocode 
+  .panel-body
+    = render 'form', url: admin_promocode_path(@promocode)

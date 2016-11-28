@@ -1,4 +1,5 @@
 class Admin::PromocodesController < ApplicationController
+  http_basic_authenticate_with name: "admin", password: "admin"
   before_action :set_promocode, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -20,7 +21,7 @@ class Admin::PromocodesController < ApplicationController
 
     respond_to do |format|
       if @promocode.save
-        format.html { redirect_to admin_promocode_path(@promocode), notice: 'Promocode was successfully created.' }
+        format.html { redirect_to admin_promocodes_path, notice: 'Promocode was successfully created.' }
       else
         format.html { render :new }
       end
@@ -30,7 +31,7 @@ class Admin::PromocodesController < ApplicationController
   def update
     respond_to do |format|
       if @promocode.update(promocode_params)
-        format.html { redirect_to admin_promocode_path(@promocode), notice: 'Promocode was successfully updated.' }
+        format.html { redirect_to admin_promocodes_path, notice: 'Promocode was successfully updated.' }
       else
         format.html { render :edit }
       end

@@ -1,27 +1,29 @@
-%h1 Listing promocodes
+.panel.panel-default 
+  .panel-heading
+    .panel-title Promocodes 
+  .panel-body
+    .col-md-8
+      %table.table
+        %thead
+          %tr
+            %th Name
+            %th Type
+            %th Value
+            %th Used in conjuncation
+            %th
 
-%table
-  %thead
-    %tr
-      %th Name
-      %th Type
-      %th Value
-      %th Used in conjuncation
-      %th
-      %th
-      %th
+        %tbody
+          - @promocodes.each do |promocode|
+            %tr
+              %td= promocode.name
+              %td= promocode.promo_type
+              %td= promocode.value
+              %td= promocode.used_in_conjuncation ? 'Yes' : 'No'
+              %td= link_to 'Edit', edit_admin_promocode_path(promocode), class: 'btn btn-primary btn-xs'
 
-  %tbody
-    - @promocodes.each do |promocode|
-      %tr
-        %td= promocode.name
-        %td= promocode.promo_type
-        %td= promocode.value
-        %td= promocode.used_in_conjuncation ? 'Yes' : 'No'
-        %td= link_to 'Show', admin_promocode_path(promocode)
-        %td= link_to 'Edit', edit_admin_promocode_path(promocode)
-        %td= link_to 'Destroy', admin_promocode_path(promocode), :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %br
 
-%br
-
-= link_to 'New Promocode', new_admin_promocode_path
+    .row
+      .col-md-8
+        .pull-right
+          = link_to 'New Promocode', new_admin_promocode_path, class: 'btn btn-primary'

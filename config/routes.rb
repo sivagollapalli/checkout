@@ -9,6 +9,10 @@ Rails.application.routes.draw do
       post 'checkout'
       post 'apply_promocode'
     end
+
+    member do
+      delete 'remove_item'
+    end
   end
 
   resources :customers

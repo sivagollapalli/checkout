@@ -13,7 +13,7 @@ class CustomersController < ApplicationController
       # call payment gateway
       @customer.save
       @order.update_attributes(customer: @customer, state: 'confirmed')
-      flash.now[:notice] = 'Order successfully placed'
+      flash[:notice] = 'Order successfully placed'
       redirect_to root_path
     else
       render 'edit'

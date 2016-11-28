@@ -1,74 +1,84 @@
 
-= simple_form_for @order, url: checkout_orders_path(id: @order.id), html: { method: :post } do |f|
-  %br
-  .row
-    - total = 0
-    .col-md-12
-      .col-md-6
-        %h3 Order Summary
-        %table.table
-          %tr
-            %th Item Name
-            %th 
-              .pull-right Qty
-            %th 
-              .pull-right Price 
-            %th 
-              .pull-right Total
-          - @order.order_items.includes(:item).each do |order_item|
+- if @order.order_items.any?
+  = simple_form_for @order, url: checkout_orders_path(id: @order.id), html: { method: :post } do |f|
+    %br
+    .row
+      - total = 0
+      .col-md-12
+        .col-md-6
+          %h3 Order Summary
+          %table.table
             %tr
-              %td= order_item.item.name
+              %th Item Name
+              %th 
+                .pull-right Qty
+              %th 
+                .pull-right Price 
+              %th 
+                .pull-right Total
+              %th Action
+            - @order.order_items.includes(:item).each do |order_item|
+              %tr
+                %td= order_item.item.name
+                %td
+                  .pull-right=order_item.qty
+                %td
+                  .pull-right= number_to_currency(order_item.item.price, unit: '£')
+                %td
+                  .pull-right= number_to_currency(order_item.item.price * order_item.qty, unit: '£')
+                %td
+                  = link_to 'remove', remove_item_order_path(@order.id, item_id: order_item.id), method: :delete,
+                    data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs', remote: true 
+            %tr
               %td
-                .pull-right=order_item.qty
+              %td &nbsp;
+              %td 
+                .pull-right 
+                  %b
+                    Total Price 
               %td
-                .pull-right= number_to_currency(order_item.item.price, unit: '£')
+                .pull-right= number_to_currency(@order.total_price, unit: '£')  
+    .row
+      .col-md-8
+        = f.input :promocode, collection: Promocode.pluck(:name, :id), wrapper: :bootstrap,
+          wrapper_html: { class: 'col-md-4' },
+          my_wrapper_html: { class: 'col-md-6' }, label_html: { class: 'col-md-6' },
+          label: 'Select promocode', 
+          input_html: { multiple: true }, selected: @order.promotions.pluck(:promocode_id) 
+        .col-md-2
+          .pull-left
+            = link_to 'Apply', '#', class: 'btn btn-primary apply'
+    .row
+      .col-md-12
+        .col-md-6
+          %table.table
+            %tr
+              %td &nbsp;
+              %td &nbsp;
               %td
-                .pull-right= number_to_currency(order_item.item.price * order_item.qty, unit: '£')
-          %tr
-            %td
-            %td &nbsp;
-            %td 
-              .pull-right 
-                %b
-                  Total Price 
-            %td
-              .pull-right= number_to_currency(@order.total_price, unit: '£')  
-  .row
-    .col-md-8
-      = f.input :promocode, collection: Promocode.pluck(:name, :id), wrapper: :bootstrap,
-        wrapper_html: { class: 'col-md-4' },
-        my_wrapper_html: { class: 'col-md-6' }, label_html: { class: 'col-md-6' },
-        label: 'Select promocode', 
-        input_html: { multiple: true }, selected: @order.promotions.pluck(:promocode_id) 
-      .col-md-2
-        .pull-left
-          = link_to 'Apply', '#', class: 'btn btn-primary apply'
-  .row
-    .col-md-12
+                .pull-right
+                  %b
+                    Discount
+              %td 
+                .pull-right.right-padding
+                  (-) #{number_to_currency(@order.total_price - @order.price_after_discount, unit: '£')}  
+              %td &nbsp; 
+            %tr
+              %td &nbsp;
+              %td &nbsp;
+              %td
+                .pull-right
+                  %b
+                    Final Price
+              %td
+                .pull-right.right-padding= number_to_currency(@order.price_after_discount, unit: '£') 
+              %td &nbsp;
+    .row
       .col-md-6
-        %table.table
-          %tr
-            %td &nbsp;
-            %td &nbsp;
-            %td
-              .pull-right
-                %b
-                  Discount
-            %td 
-              .pull-right
-                (-) #{number_to_currency(@order.total_price - @order.price_after_discount, unit: '£')}  
-          %tr
-            %td &nbsp;
-            %td &nbsp;
-            %td
-              .pull-right
-                %b
-                  Final Price
-            %td
-              .pull-right= number_to_currency(@order.price_after_discount, unit: '£') 
-  .row
-    .col-md-6
-      .pull-right= f.submit 'Checkout', class: 'btn btn-primary'
+        .pull-right= f.submit 'Checkout', class: 'btn btn-primary'
+- else
+  .alert.alert-warning
+    Please select atleast one item
 
 :javascript
   $('.apply').click(function(){

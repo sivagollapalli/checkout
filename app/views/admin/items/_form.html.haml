@@ -1,16 +1,14 @@
-= form_for @item, url: admin_items_path do |f|
-  - if @item.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@item.errors.count, "error")} prohibited this item from being saved:"
-      %ul
-        - @item.errors.full_messages.each do |msg|
-          %li= msg
+= simple_form_for @item, url: url do |f|
+  .row
+    .col-md-6
+      = f.input :name
+      %br
+      = f.input :price
+  %br
+  %br
+  .row
+    .col-md-2
+      .pull-right
+        = f.submit 'Save', class: 'btn btn-primary'
+        = link_to 'Back', admin_items_path, class: 'btn btn-default'
 
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :price
-    = f.text_field :price
-  .actions
-    = f.submit 'Save'

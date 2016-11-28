@@ -1,12 +1,12 @@
-.col-md-12
-  .col-md-12
-    %h1 New Order 
-
-= simple_form_for Order.new, url: add_items_orders_path, remote: true do |f|
-  .row
-    .col-md-8
-      .col-md-4= f.input :item, collection: Item.all.pluck(:name, :id), label: 'Select Item'
-      .col-md-4= f.input :qty, input_html: { value: 1 }
-      .col-md-4= f.submit 'Add to basket', class: 'btn btn-primary' 
-      = f.hidden_field :id, value: @order.id
-#order_summary
+.panel.panel-default 
+  .panel-heading
+    .panel-title New Order 
+  .panel-body
+    = simple_form_for Order.new, url: add_items_orders_path, remote: true do |f|
+      .row
+        .col-md-8
+          .col-md-4= f.input :item, collection: Item.all.pluck(:name, :id), label: 'Select Item'
+          .col-md-4= f.input :qty, input_html: { value: 1 }
+          .col-md-4= f.submit 'Add to basket', class: 'btn btn-primary' 
+          = f.hidden_field :id, value: @order.id
+    #order_summary

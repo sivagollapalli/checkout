@@ -35,6 +35,13 @@ class OrdersController < ApplicationController
     redirect_to edit_customer_path(id: @order.customer, order_id: @order.id)
   end
 
+  def remove_item
+    @order = Order.find(params[:id])
+    @order.order_items.find(params[:item_id]).destroy
+    @order.reload
+    @order.calculate_order_price
+  end
+
   private 
 
   def order_params

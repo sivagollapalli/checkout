@@ -1,7 +1,5 @@
-%h1 Editing item
-
-= render 'form'
-
-= link_to 'Show', admin_item_path(@item)
-\|
-= link_to 'Back', admin_items_path
+.panel.panel-default 
+  .panel-heading
+    .panel-title Edit Item 
+  .panel-body
+    = render 'form', url: admin_item_path(@item)

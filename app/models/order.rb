@@ -25,6 +25,7 @@ class Order < ApplicationRecord
           self.price_after_discount -= (self.price_after_discount * (promocode.value / 100))
         end
       end
+      self.price_after_discount = 0 if self.price_after_discount < 0
     end
 
     save
