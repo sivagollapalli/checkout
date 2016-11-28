@@ -10,13 +10,23 @@ class OrdersController < ApplicationController
 
       if @order.save
         order_item = @order.order_items.find_or_initialize_by(item_id: order_params[:item])
-        order_item.qty = order_item.qty + order_params[:qty].to_i
+        order_item.qty = order_params[:qty].to_i
         order_item.save
 
         @order.calculate_order_price
       end
     else
       flash.now[:error] = 'Please select an item'
+    end
+  end
+
+  def apply_promocode
+    @order = Order.find(order_params[:id])
+    error, success = @order.apply_promocode(order_params[:promocode])
+    if success 
+      flash.now[:notice] = 'Promocode applied successfully'
+    else
+      flash.now[:error] = error
     end
   end
 
@@ -28,6 +38,6 @@ class OrdersController < ApplicationController
   private 
 
   def order_params
-    params.require(:order).permit(:id, :item, :qty)
+    params.require(:order).permit(:id, :item, :qty, promocode: [])
   end
 end

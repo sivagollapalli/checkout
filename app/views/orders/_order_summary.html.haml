@@ -34,5 +34,49 @@
             %td
               .pull-right= number_to_currency(@order.total_price, unit: '£')  
   .row
+    .col-md-8
+      = f.input :promocode, collection: Promocode.pluck(:name, :id), wrapper: :bootstrap,
+        wrapper_html: { class: 'col-md-4' },
+        my_wrapper_html: { class: 'col-md-6' }, label_html: { class: 'col-md-6' },
+        label: 'Select promocode', 
+        input_html: { multiple: true }, selected: @order.promotions.pluck(:promocode_id) 
+      .col-md-2
+        .pull-left
+          = link_to 'Apply', '#', class: 'btn btn-primary apply'
+  .row
+    .col-md-12
+      .col-md-6
+        %table.table
+          %tr
+            %td &nbsp;
+            %td &nbsp;
+            %td
+              .pull-right
+                %b
+                  Discount
+            %td 
+              .pull-right
+                (-) #{number_to_currency(@order.total_price - @order.price_after_discount, unit: '£')}  
+          %tr
+            %td &nbsp;
+            %td &nbsp;
+            %td
+              .pull-right
+                %b
+                  Final Price
+            %td
+              .pull-right= number_to_currency(@order.price_after_discount, unit: '£') 
+  .row
     .col-md-6
       .pull-right= f.submit 'Checkout', class: 'btn btn-primary'
+
+:javascript
+  $('.apply').click(function(){
+    $.ajax({
+      type: 'post', 
+      url: '/orders/apply_promocode',
+      data: { 'order' : { 'promocode': $('#order_promocode').val(), 
+                          'id': "#{@order.id}",
+            } } 
+      })
+  });

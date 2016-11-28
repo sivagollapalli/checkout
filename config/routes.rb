@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     collection do
       post 'add_items' 
       post 'checkout'
+      post 'apply_promocode'
     end
   end
 
