@@ -1,0 +1,56 @@
+.panel.panel-default 
+  .panel-heading
+    .panel-title Invoice 
+  .panel-body
+    .row
+      .col-md-8
+        Ref No: #{@order.ref_no.upcase}
+    %br
+    .row
+      .col-md-8
+        Address: #{@order.customer.address}
+    %br
+    .row
+      .col-md-8
+        %table.table
+          %tr
+            %th Item Name
+            %th 
+              .pull-right Item Qty
+            %th 
+              .pull-right Unit Price
+            %th 
+              .pull-right Total Price
+          - @order.order_items.includes(:item).each do |order_item|
+            %tr
+              %td= order_item.item.name
+              %td
+                .pull-right= order_item.qty
+              %td
+                .pull-right= number_to_currency(order_item.item.price, unit: '£')
+              %td
+                .pull-right= number_to_currency(order_item.item.price * order_item.qty, unit: '£')
+          %tr
+            %td &nbsp;
+            %td &nbsp;
+            %td 
+              .pull-right Total Price 
+            %td
+              .pull-right= number_to_currency(@order.total_price, unit: '£')
+          %tr
+            %td &nbsp;
+            %td &nbsp;
+            %td 
+              .pull-right Discount
+            %td
+              .pull-right (-) #{number_to_currency(@order.total_price - @order.price_after_discount, unit: '£')}
+          %tr
+            %td &nbsp;
+            %td &nbsp;
+            %td 
+              .pull-right Final Price 
+            %td
+              .pull-right #{number_to_currency(@order.price_after_discount, unit: '£')}
+    .row
+      .col-md-8
+        = link_to 'Place New Order', root_path, class: 'btn btn-default'

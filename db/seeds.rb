@@ -12,5 +12,5 @@
   end
 
 Promocode.find_or_create_by(name: '20%OFF', promo_type: 'percentage', value: 20.0, used_in_conjuncation: false)
-Promocode.find_or_create_by(name: '5%OFF', promo_type: 'flat', value: 5)
+Promocode.find_or_create_by(name: '5%OFF', promo_type: 'percentage', value: 5)
 Promocode.find_or_create_by(name: '20POUNDSOFF', promo_type: 'flat', value: 20.0)

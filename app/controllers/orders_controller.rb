@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   end
 
   def add_items 
-    if !order_params[:item].blank? || order_params[:qty].to_i > 0
+    if !order_params[:item].blank? && order_params[:qty].to_i > 0
       @order = Order.where(id: order_params[:id]).first || Order.new
       @order.customer = Customer.create
 
@@ -28,6 +28,10 @@ class OrdersController < ApplicationController
     else
       flash.now[:error] = error
     end
+  end
+
+  def show
+    @order = Order.find(params[:id])
   end
 
   def checkout

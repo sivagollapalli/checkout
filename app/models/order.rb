@@ -31,7 +31,9 @@ class Order < ApplicationRecord
     save
   end
 
-  def apply_promocode(codes = [])
+  def apply_promocode(codes)
+    codes = codes.presence || [] 
+
     promocodes = if codes.length > 1 
                   Promocode.where(id: codes).where(used_in_conjuncation: true)
                  else
@@ -48,7 +50,18 @@ class Order < ApplicationRecord
 
       return '', true
     else
-      return 'You cant use promocodes together', false
+      return 'You cant use these promocodes together', false
+    end
+  end
+
+  def add_tracking_no
+    self.update_attributes(ref_no: generate_ref_no)
+  end
+
+  def generate_ref_no
+    loop do
+      ref_no = SecureRandom.base58(10)
+      break ref_no unless Order.where(ref_no: ref_no).exists?
     end
   end
 end

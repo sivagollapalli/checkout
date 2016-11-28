@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161127165442) do
+ActiveRecord::Schema.define(version: 20161128122340) do
 
   create_table "customers", force: :cascade do |t|
     t.string   "email",            default: ""
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20161127165442) do
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
     t.string   "state",                default: "placed"
+    t.string   "ref_no",               default: ""
     t.index ["customer_id"], name: "index_orders_on_customer_id"
   end
 
