@@ -1,0 +1,10 @@
+development:
+  adapter: postgresql
+  database: checkout_development
+  pool: 5
+  timeout: 5000
+test:
+  adapter: postgresql
+  database: checkout_test
+  pool: 5
+  timeout: 5000
