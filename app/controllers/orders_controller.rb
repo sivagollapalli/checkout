@@ -3,27 +3,38 @@ class OrdersController < ApplicationController
     @order = Order.new
   end
 
-  def add_items 
-    if !order_params[:item].blank? && order_params[:qty].to_i > 0
-      @order = Order.where(id: order_params[:id]).first || Order.new
-      @order.customer = Customer.create
+  def select_item
+    @item = Item.find(order_params[:item])
+  end
 
-      if @order.save
-        order_item = @order.order_items.find_or_initialize_by(item_id: order_params[:item])
-        order_item.qty = order_params[:qty].to_i
-        order_item.save
+  def create
+    order_params
 
-        @order.calculate_order_price
-      end
-    else
-      flash.now[:error] = 'Please select an item'
+    @order = Order.create!
+
+    @items = Item.find(order_params[:items].keys)
+    @promocodes = Promocode.find(order_params[:promocodes].reject(&:blank?))
+
+    @items.each do |item|
+      @order.order_items.create(item: item, qty: order_params[:items].dig("#{item.id}", 'qty').to_i)
     end
+
+    @promocodes.each do |promo|
+      @order.promotions.create(promocode: promo)
+    end
+
+    @order.calculate_order_price
+
+    redirect_to payment_order_path(@order)
   end
 
   def apply_promocode
-    @order = Order.find(order_params[:id])
-    error, success = @order.apply_promocode(order_params[:promocode])
+    @total_price = order_params[:total_price].to_f
+
+    error, success, @discount_price = Order.apply_promocode(order_params[:promocodes], @total_price)
+
     if success 
+      @final_price = @total_price - @discount_price
       flash.now[:notice] = 'Promocode applied successfully'
     else
       flash.now[:error] = error
@@ -34,21 +45,34 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
   end
 
-  def checkout
+  def payment
+    @customer = Customer.new
     @order = Order.find(params[:id])
-    redirect_to edit_customer_path(id: @order.customer, order_id: @order.id)
-  end
 
-  def remove_item
-    @order = Order.find(params[:id])
-    @order.order_items.find(params[:item_id]).destroy
-    @order.reload
-    @order.calculate_order_price
+    if request.post?
+      @customer = Customer.find_or_initialize_by(email: customer_params[:email])
+      @customer.attributes = customer_params 
+
+      if @customer.save
+        @order.update_attributes(customer: @customer)
+        @order.confirm!
+        flash[:notice] = 'Order successfully placed'
+        redirect_to order_path(@order)
+      else
+        @card = @customer.cards.last
+      end
+    end
   end
 
   private 
 
   def order_params
-    params.require(:order).permit(:id, :item, :qty, promocode: [])
+    whitelisted = params.require(:order).permit(:id, :email, :item, :qty, :total_price, promocodes: [])
+    whitelisted.merge!(items: params.dig(:order, :items))
+  end
+
+  def customer_params
+    params.require(:customer).permit(:email, :address, cards_attributes: [:credit_card, :card_expiry_date, 
+                                     :card_expiry_year, :card_cvv])
   end
 end

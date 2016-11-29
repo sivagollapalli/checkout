@@ -1,5 +1,6 @@
 class Order < ApplicationRecord
-  attr_accessor :item, :qty, :promocode
+  attr_accessor :credit_card, :card_expiry_date, :card_expiry_year, :card_cvv, 
+                :item, :items, :qty, :promocodes, :email, :address
 
   has_many :order_items, dependent: :destroy
   has_many :promotions, dependent: :destroy
@@ -9,7 +10,7 @@ class Order < ApplicationRecord
     total = 0
 
     order_items.each do |order_item|
-      total += order_item.item.price * order_item.qty
+      total += order_item.item.price * order_item.qty.to_i
     end
 
     self.total_price = total
@@ -31,8 +32,9 @@ class Order < ApplicationRecord
     save
   end
 
-  def apply_promocode(codes)
+  def self.apply_promocode(codes, total_price)
     codes = codes.presence || [] 
+    discount_price = total_price.to_f
 
     promocodes = if codes.length > 1 
                   Promocode.where(id: codes).where(used_in_conjuncation: true)
@@ -41,21 +43,18 @@ class Order < ApplicationRecord
                  end
 
     if promocodes.length == codes.length
-      self.promotions.destroy_all
-
       promocodes.each do |promo|
-        self.promotions.create(promocode: promo)
+        if promo.flat?
+          discount_price -= promo.value
+        else
+          discount_price -= (discount_price * (promo.value / 100))
+        end
       end
-      self.calculate_order_price
 
-      return '', true
+      return '', true, total_price.to_f - discount_price
     else
-      return 'You cant use these promocodes together', false
+      return 'You cant use these promocodes together', false, total_price.to_f - discount_price
     end
-  end
-
-  def add_tracking_no
-    self.update_attributes(ref_no: generate_ref_no)
   end
 
   def generate_ref_no
@@ -63,5 +62,11 @@ class Order < ApplicationRecord
       ref_no = SecureRandom.base58(10)
       break ref_no unless Order.where(ref_no: ref_no).exists?
     end
+  end
+
+  def confirm!
+    self.state = 'confirmed'
+    self.ref_no = generate_ref_no
+    save
   end
 end

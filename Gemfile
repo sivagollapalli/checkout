@@ -29,6 +29,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'haml-rails'
 gem 'bootstrap-sass', '3.2.0.2'
 gem 'simple_form'
+gem 'jquery-slick-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

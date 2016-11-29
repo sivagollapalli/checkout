@@ -8,10 +8,12 @@ Rails.application.routes.draw do
       post 'add_items' 
       post 'checkout'
       post 'apply_promocode'
+      post 'select_item'
     end
 
     member do
       delete 'remove_item'
+      match 'payment', via: [:get, :post]
     end
   end
 

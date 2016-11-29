@@ -78,7 +78,7 @@ SimpleForm.setup do |config|
     end
   end
 
-  config.wrappers :horizontal_file_input, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
+  config.wrappers :horizontal_file_input, tag: 'div', class: 'form-group col-md-12', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder
     b.optional :maxlength
@@ -86,7 +86,7 @@ SimpleForm.setup do |config|
     b.use :label, class: 'col-sm-3 control-label'
 
     b.wrapper tag: 'div', class: 'col-sm-9' do |ba|
-      ba.use :input
+      ba.use :input, class: 'form-control'
       ba.use :error, wrap_with: { tag: 'span', class: 'help-block' }
       ba.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
     end

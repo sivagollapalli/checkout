@@ -11,9 +11,30 @@
  * It is generally better to create a new file per style scope.
  *
  */
+@import 'slick';
+@import 'slick-theme';
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
 .right-padding {
   padding-right: 70px;
+}
+
+.scroller {
+  div {
+    text-align: center;
+    font-size: 30px;
+  }
+}
+
+.slick-prev::before, .slick-next::before {
+  color: #000;
+}
+
+.slick-next {
+  right: -5px;
+}
+
+.slick-prev {
+  left: -5px;
 }

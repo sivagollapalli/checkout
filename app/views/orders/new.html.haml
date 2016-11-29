@@ -1,12 +1,87 @@
-.panel.panel-default 
-  .panel-heading
-    .panel-title New Order 
-  .panel-body
-    = simple_form_for Order.new, url: add_items_orders_path, remote: true do |f|
+.col-md-6
+  .panel.panel-default 
+    .panel-heading
+      .panel-title New Order 
+    .panel-body
+      = simple_form_for @order do |f|
+        .row
+          .col-md-12
+            .items
+              - Item.all.each do |item|
+                .col-md-2
+                  = f.check_box :item, data: { price: item.price, name: "order[items][#{item.id}][id]" }, 
+                    class: 'item', id: item.id
+                  #{item.name}
+        #summary.hide
+          .row
+            .col-md-12
+              #basket
+                %table.table
+                  %thead
+                    %tr
+                      %th Item Name
+                      %th.text-right Price
+                      %th.text-right Qty
+                      %th.text-right Total Price
+                  %tbody#append_item
+          .row
+            .col-md-12
+              .text-right#total_price
+                Total Price: #{0.00}
+
+          .row
+            .col-md-12
+              = f.input :promocodes, collection: Promocode.pluck(:name, :id), wrapper: :bootstrap,
+                wrapper_html: { class: 'col-md-6' },
+                my_wrapper_html: { class: 'col-md-6' }, label_html: { class: 'col-md-6' },
+                label: 'Select promocode', 
+                input_html: { multiple: true }, selected: @order.promotions.pluck(:promocode_id) 
+              .col-md-2
+                = link_to 'Apply', '#', class: 'btn btn-primary apply'
+              .text-right
+                %p{id: 'discount_price'} Discount: (-) £ 0.00
+                %br
+                %p{id: 'final_price'} Final Price: £ 0.00
+
+          .row
+            .pull-right
+              .col-md-2
+                = f.submit 'Place Order', class: 'btn btn-primary submit'
       .row
-        .col-md-8
-          .col-md-4= f.input :item, collection: Item.all.pluck(:name, :id), label: 'Select Item'
-          .col-md-4= f.input :qty, input_html: { value: 1 }
-          .col-md-4= f.submit 'Add to basket', class: 'btn btn-primary' 
-          = f.hidden_field :id, value: @order.id
-    #order_summary
+        #order_summary
+
+:javascript
+  $(document).ready(function(){
+    $('.items').slick({
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 3
+    });
+  
+    $('.item').click(function(){
+      if($(this).is(':checked')) {
+        $.ajax({
+          type: 'post', 
+          url: '/orders/select_item',
+          data: { 'order' : { 'item': $(this).attr('id') } }
+        })
+        $('#summary').attr('class', 'show')
+      } else {
+        $("#row_"+$(this).attr('id')).remove()
+
+        if($('.item:checked').length == 0) {
+          $('#summary').attr('class', 'hide')
+        } 
+      }
+      calculate_order_price();
+    })
+
+    $('.apply').click(function(){
+      $.ajax({
+        type: 'post', 
+        url: '/orders/apply_promocode',
+        data: { 'order' : { 'total_price': $('#total_price').attr('data-total-price'),
+                            'promocodes': $('#order_promocodes').val() } }
+      })
+    });
+  });

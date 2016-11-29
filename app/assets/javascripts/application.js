@@ -14,7 +14,17 @@
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require_tree .
+//= require jquery.slick
 
 $('.alert').on('show', function(){
   $(".alert").delay(5000).fadeOut('slow');
 })
+
+function calculate_order_price() {
+  var total = 0;
+  $('td.total_price').each(function(i, obj) {
+    total += parseFloat($(obj).text());
+  });
+
+  $('#total_price').html("Total Price: £ "+ total.toFixed(2)).attr('data-total-price', total);
+}
