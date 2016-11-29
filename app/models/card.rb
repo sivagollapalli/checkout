@@ -4,6 +4,8 @@ class Card < ApplicationRecord
   validates :credit_card, :card_expiry_date, :card_expiry_year, :card_cvv, 
             presence: true
   validates :card_cvv, :credit_card, format: { with: /[0-9]/, message: 'Enter only numbers' }
+  validates_length_of :credit_card, is: 16 
+  validates_length_of :card_cvv, is: 3 
 
   before_create :encrypt_card_info
 

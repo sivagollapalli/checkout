@@ -10,10 +10,11 @@
   $('.qty').keyup(function(){
     var price = $(this).attr('data-price') * $(this).val()
 
-    if(isNaN(price)) {
+    if(isNaN(price) || $(this).val() == "") {
       $('#value_'+$(this).attr('id')).html(0.00.toFixed(2));
     } else {
       $('#value_'+$(this).attr('id')).html(price.toFixed(2));
     }
     calculate_order_price();
+    validate_qty();
   });

@@ -1,4 +1,4 @@
-.col-md-6
+.col-md-10
   .panel.panel-default 
     .panel-heading
       .panel-title New Order 
@@ -9,6 +9,7 @@
             .items
               - Item.all.each do |item|
                 .col-md-2.item-style
+                  %div.item-img= image_tag("#{item.id}/image.jpeg")
                   = f.check_box :item, data: { price: item.price, name: "order[items][#{item.id}][id]" }, 
                     class: 'item', id: item.id
                   #{item.name}
@@ -48,4 +49,4 @@
           .row
             .pull-right
               .col-md-2
-                = f.submit 'Place Order', class: 'btn btn-primary submit'
+                = f.submit 'Place Order', class: 'btn btn-primary final-submit disabled'

@@ -8,8 +8,6 @@ class OrdersController < ApplicationController
   end
 
   def create
-    order_params
-
     @order = Order.create!
 
     @items = Item.find(order_params[:items].keys)

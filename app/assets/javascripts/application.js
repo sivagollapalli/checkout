@@ -27,4 +27,17 @@ function calculate_order_price() {
   });
 
   $('#total_price').html("Total Price: £ "+ total.toFixed(2)).attr('data-total-price', total);
+  $('#final_price').html("Final Price: £ "+ total.toFixed(2)).attr('data-final-price', total);
+}
+
+function validate_qty() {
+  $.each($('.qty'), function(key, obj) { 
+    value = $(obj).val();
+
+    if(value == "" || isNaN(value)) {
+      $('.final-submit').attr('class', 'btn btn-primary final-submit disabled');
+      return false; 
+    }
+    $('.final-submit').attr('class', 'btn btn-primary final-submit');
+  });
 }

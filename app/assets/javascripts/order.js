@@ -7,6 +7,7 @@ $(document).ready(function(){
 
   $('.item').click(function(){
     if($(this).is(':checked')) {
+      $('.final-submit').attr('class', 'btn btn-primary final-submit disabled')
       $.ajax({
         type: 'post', 
         url: '/orders/select_item',
@@ -21,6 +22,7 @@ $(document).ready(function(){
       } 
     }
     calculate_order_price();
+    validate_qty();
   })
 
   $('.apply').click(function(){
