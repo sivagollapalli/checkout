@@ -9,7 +9,7 @@
             .items
               - Item.all.each do |item|
                 .col-md-2.item-style
-                  %div.item-img= image_tag("#{item.id}/image.jpeg")
+                  %div.item-img= image_tag("image_#{item.id}.jpeg")
                   = f.check_box :item, data: { price: item.price, name: "order[items][#{item.id}][id]" }, 
                     class: 'item', id: item.id
                   #{item.name}
