@@ -1,17 +1,30 @@
-# README
+## Stack:
 
-* Ruby version - 2.3.0p0
+* Rails 5.0.0.1
+* Ruby 2.3.0
+* PostgreSQL 9.6
 
-* Rails version - 5.0.0.1
+## Heroku URL:
+  https://demo-ecom.herokuapp.com/
 
-* DB - sqlite3
+## Getting Started
+* `bundle install`
+* `bin/rails db:migrate`
+* `bin/rails db:seed`
 
-* To run app - `bin/rails db:create`, `bin/rails db:migrate`, `bin/rails db:seed`, `bin/rails s`
+## Assumptions:
+* Assuming customer places order without login.
+* Assuming every payment is successfull since there is no payment gateway.
 
-# PENDING
+## Schema
+* Card(Stores customer card information in encrypted form)
+* Customer
+* Order
+* OrderItem
+* Promocode
+* Promotion
 
-* Apply Promocode
+## Promocode
 
-* Adding customer details
-
-* Placing order
+* Every promocode is valid 
+* Only two kinds of promocode supported i.e., Flat / Percentage 
