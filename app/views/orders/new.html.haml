@@ -8,10 +8,12 @@
           .col-md-12
             .items
               - Item.all.each do |item|
-                .col-md-2
+                .col-md-2.item-style
                   = f.check_box :item, data: { price: item.price, name: "order[items][#{item.id}][id]" }, 
                     class: 'item', id: item.id
                   #{item.name}
+                  %br
+                  %p.item-price= number_to_currency(item.price, unit: '£')
         #summary.hide
           .row
             .col-md-12
@@ -47,41 +49,3 @@
             .pull-right
               .col-md-2
                 = f.submit 'Place Order', class: 'btn btn-primary submit'
-      .row
-        #order_summary
-
-:javascript
-  $(document).ready(function(){
-    $('.items').slick({
-      infinite: true,
-      slidesToShow: 3,
-      slidesToScroll: 3
-    });
-  
-    $('.item').click(function(){
-      if($(this).is(':checked')) {
-        $.ajax({
-          type: 'post', 
-          url: '/orders/select_item',
-          data: { 'order' : { 'item': $(this).attr('id') } }
-        })
-        $('#summary').attr('class', 'show')
-      } else {
-        $("#row_"+$(this).attr('id')).remove()
-
-        if($('.item:checked').length == 0) {
-          $('#summary').attr('class', 'hide')
-        } 
-      }
-      calculate_order_price();
-    })
-
-    $('.apply').click(function(){
-      $.ajax({
-        type: 'post', 
-        url: '/orders/apply_promocode',
-        data: { 'order' : { 'total_price': $('#total_price').attr('data-total-price'),
-                            'promocodes': $('#order_promocodes').val() } }
-      })
-    });
-  });

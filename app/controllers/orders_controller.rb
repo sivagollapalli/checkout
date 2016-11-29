@@ -25,7 +25,13 @@ class OrdersController < ApplicationController
 
     @order.calculate_order_price
 
-    redirect_to payment_order_path(@order)
+    if @order.price_after_discount.zero?
+      flash[:notice] = 'Order successfully placed'
+      @order.confirm!
+      redirect_to order_path(@order)
+    else
+      redirect_to payment_order_path(@order)
+    end
   end
 
   def apply_promocode
@@ -34,7 +40,7 @@ class OrdersController < ApplicationController
     error, success, @discount_price = Order.apply_promocode(order_params[:promocodes], @total_price)
 
     if success 
-      @final_price = @total_price - @discount_price
+      @final_price = (@total_price - @discount_price) < 0 ? 0 : (@total_price - @discount_price)
       flash.now[:notice] = 'Promocode applied successfully'
     else
       flash.now[:error] = error

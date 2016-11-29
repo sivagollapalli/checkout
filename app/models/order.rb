@@ -36,6 +36,8 @@ class Order < ApplicationRecord
     codes = codes.presence || [] 
     discount_price = total_price.to_f
 
+    return '', true, 0.0 if discount_price.zero?
+
     promocodes = if codes.length > 1 
                   Promocode.where(id: codes).where(used_in_conjuncation: true)
                  else

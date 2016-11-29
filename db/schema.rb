@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161129115543) do
+ActiveRecord::Schema.define(version: 20161129123235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,14 +26,10 @@ ActiveRecord::Schema.define(version: 20161129115543) do
   end
 
   create_table "customers", force: :cascade do |t|
-    t.string   "email",            default: ""
-    t.string   "credit_card",      default: ""
-    t.integer  "card_expiry_date"
-    t.integer  "card_expiry_year"
-    t.integer  "card_cvv"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.text     "address",          default: ""
+    t.string   "email",      default: ""
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.text     "address",    default: ""
   end
 
   create_table "items", force: :cascade do |t|
