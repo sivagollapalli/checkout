@@ -9,4 +9,7 @@ FactoryGirl.define do
     promo_type 'percentage'
     value 20
   end
+
+  factory :order do
+  end
 end

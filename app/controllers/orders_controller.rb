@@ -72,11 +72,11 @@ class OrdersController < ApplicationController
 
   def order_params
     whitelisted = params.require(:order).permit(:id, :email, :item, :qty, :total_price, promocodes: [])
-    whitelisted.merge!(items: params.dig(:order, :items))
+    whitelisted = whitelisted.merge(items: params.dig(:order, :items))
   end
 
   def customer_params
-    params.require(:customer).permit(:email, :address, cards_attributes: [:credit_card, :card_expiry_date, 
+    params.require(:customer).permit(:email, :address, cards_attributes: [:credit_card, :card_expiry_month, 
                                      :card_expiry_year, :card_cvv])
   end
 end

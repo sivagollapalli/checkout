@@ -1,5 +1,5 @@
 class Order < ApplicationRecord
-  attr_accessor :credit_card, :card_expiry_date, :card_expiry_year, :card_cvv, 
+  attr_accessor :credit_card, :card_expiry_month, :card_expiry_year, :card_cvv, 
                 :item, :items, :qty, :promocodes, :email, :address
 
   has_many :order_items, dependent: :destroy

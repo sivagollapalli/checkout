@@ -11,6 +11,7 @@
 * `bundle install`
 * `bin/rails db:migrate`
 * `bin/rails db:seed`
+* `bin/rails test` (To run testcases)
 
 ## Assumptions:
 * Assuming customer places order without login.

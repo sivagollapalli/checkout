@@ -11,7 +11,7 @@
             = f.input :address, as: :text
             = f.simple_fields_for :cards, @card || Card.new do |card|
               = card.input :credit_card, input_html: { maxlength: 16 }
-              = card.input :card_expiry_date, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] 
+              = card.input :card_expiry_month, collection: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] 
               = card.input :card_expiry_year, collection: [2016, 2017, 2018, 2019, 2020, 2021, 2022]
               = card.input :card_cvv, input_html: { type: 'password', maxlength: 3 } 
             = f.submit 'Confirm payment', class: 'btn btn-primary pull-right'
