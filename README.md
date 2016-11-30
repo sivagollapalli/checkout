@@ -1,3 +1,8 @@
+[![Code
+Climate](https://codeclimate.com/github/sivagollapalli/checkout/badges/gpa.svg)](https://codeclimate.com/github/sivagollapalli/checkout)
+
+[![CircleCI](https://circleci.com/gh/sivagollapalli/checkout.svg?style=svg)](https://circleci.com/gh/sivagollapalli/checkout)
+
 ## Stack:
 
 * Rails 5.0.0.1
